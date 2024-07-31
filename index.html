@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LORDS BOT BY DANIEL</title>
+    <link rel="icon" href="https://telegra.ph/file/b6a7a3f946fbf5677d88b.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #141e30, #243b55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .profile-pic {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid #fff;
+        }
+        .social-icons {
+            margin-bottom: 20px;
+        }
+        .social-icons a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            transition: color 0.3s;
+        }
+        .social-icons a:hover {
+            color: #f0f0f0;
+        }
+        .button {
+            background: linear-gradient(45deg, #f0f0f0, #ddd);
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            width: calc(100% - 20px);
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: linear-gradient(45deg, #ddd, #ccc);
+        }
+        .collection {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            margin-top: 20px;
+        }
+        .slider {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .slider .slide {
+            width: calc(33% - 20px);
+            text-align: center;
+            flex-shrink: 0;
+            box-sizing: border-box;
+        }
+        .slider img {
+            width: 100%;
+            height: auto;
+            max-width: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid #fff;
+            transition: transform 0.3s;
+        }
+        .slider img:hover {
+            transform: scale(1.05);
+        }
+        .slide-title, .slide-description, .slide-price {
+            color: white;
+            margin-top: 8px;
+        }
+        .slide-price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .slider a {
+            text-decoration: none; /* Remove blue underline */
+            color: white; /* Ensure text is white */
+        }
+        .go-to-collection {
+            display: block;
+            background: linear-gradient(45deg, #f0f0f0, #ddd);
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-top: 20px;
+            transition: background 0.3s;
+            text-align: center;
+        }
+        .go-to-collection:hover {
+            background: linear-gradient(45deg, #ddd, #ccc);
+        }
+        @media (max-width: 768px) {
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+            .social-icons a {
+                font-size: 20px;
+                margin: 0 10px;
+            }
+            .button {
+                font-size: 16px;
+            }
+            .slider img {
+                max-width: 100px;
+            }
+            .slider .slide {
+                width: calc(50% - 20px);
+            }
+        }
+    </style>
+    <script src="settings/page.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.title = pageData.title;
+            document.querySelector('.container h1').textContent = pageData.title;
+            document.querySelector('.container p').textContent = pageData.description;
+            document.querySelector('.profile-pic').src = pageData.profilePic;
+            document.querySelector('link[rel="icon"]').href = pageData.profilePic; // Set favicon
+
+            const socialLinks = document.querySelectorAll('.social-icons a');
+            socialLinks[0].href = pageData.socialLinks.facebook;
+            socialLinks[1].href = pageData.socialLinks.instagram;
+            socialLinks[2].href = pageData.socialLinks.tiktok;
+            socialLinks[3].href = pageData.socialLinks.youtube;
+
+            const buttons = document.querySelectorAll('.button');
+            pageData.buttons.forEach((button, index) => {
+                buttons[index].textContent = button.text;
+                buttons[index].href = button.link;
+            });
+
+            document.querySelector('.collection h3').textContent = pageData.collectionTitle;
+
+            const slider = document.querySelector('.slider');
+            pageData.artworks.forEach(artwork => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.innerHTML = `
+                    <a href="https://wa.me/${pageData.whatsappNumber}?text=${encodeURIComponent(`Saya tertarik dengan produk ${artwork.title} (${artwork.description})`)}}">
+                        <img src="${artwork.image}" alt="${artwork.title}">
+                        <div class="slide-title">${artwork.title}</div>
+                        <div class="slide-price">${artwork.price}</div>
+                        <div class="slide-description">${artwork.description}</div>
+                    </a>
+                `;
+                slider.appendChild(slide);
+            });
+
+            document.querySelector('.go-to-collection').href = pageData.collectionLink;
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <img src="" alt="Profile Picture" class="profile-pic">
+        <h1></h1>
+        <p></p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <a href="#" class="button"></a>
+        <a href="#" class="button"></a>
+        <a href="#" class="button"></a>
+        <div class="collection">
+            <h3></h3>
+            <div class="slider">
+                <!-- Produk akan diisi oleh JavaScript -->
+            </div>
+        </div>
+        <a href="#" class="go-to-collection">Klik salah satu untuk order</a>
+    </div>
+</body>
+</html>

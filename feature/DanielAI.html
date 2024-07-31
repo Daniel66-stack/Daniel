@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lords Daniel Chat</title>
+    <link rel="icon" href="/feature/image/icon.jpg" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #2c2c2c;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 90vh;
+            position: relative;
+        }
+        .chat-header {
+            background-color: #444;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header .icon {
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+        .chat-header .icon:hover {
+            color: #007bff;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-input {
+            padding: 10px;
+            background-color: #333;
+            border-top: 1px solid #444;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-input button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .chat-input button:hover {
+            background-color: #0056b3;
+        }
+        .chat-input button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        .chat-message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .chat-message img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 10px;
+        }
+        .chat-message.user {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+        .chat-message .message-content {
+            background-color: #333;
+            color: #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+        .popup-menu {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 10;
+        }
+        .popup-menu a {
+            display: block;
+            margin-bottom: 10px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .popup-menu a:hover {
+            text-decoration: underline;
+        }
+        .ai-chat {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1e1e1e;
+            border-top: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+        .ai-chat .ai-messages {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .ai-chat .ai-input {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+        .ai-chat .ai-input input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: #fff;
+        }
+        .ai-chat .ai-input button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .ai-chat .ai-input button:hover {
+            background-color: #0056b3;
+        }
+        .ai-chat .ai-input button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        @media (max-width: 600px) {
+            .chat-container {
+                width: 100%;
+                max-width: 100%;
+            }
+            .chat-input button {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .ai-chat {
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (window.history.pushState) {
+            const path = window.location.pathname;
+            const newPath = path.replace('.html', '');
+            window.history.pushState(null, null, newPath);
+        }
+    </script>
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>Lords Daniel Chat</span>
+            <span class="icon" onclick="toggleMenu()">⚙️</span>
+            <div id="popupMenu" class="popup-menu">
+                <a href="https://saweria.co/Vynaabot" target="_blank" onclick="toggleAIChat()">Donasi</a>
+                <a href="https://wa.me/6282389924037" target="_blank" onclick="toggleAIChat()">Pengembang</a>
+                <a href="#" onclick="toggleAIChat()">Mode AI</a>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message bot">
+                <img src="/feature/image/icon.jpg" alt="Bot Avatar">
+                <div class="message-content">Halo! Saya adalah Lords Daniel, AI spesialis dalam game "Lords Mobile." Apa yang bisa saya bantu terkait dengan "Lords Mobile" hari ini? Apakah Anda mencari tips, saran, atau informasi tertentu tentang permainan ini?</div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <button id="button1" onclick="askQuestion('Apa yang harus saya fokuskan di awal permainan?')">Apa yang harus saya fokuskan di awal permainan?</button>
+            <button id="button2" onclick="askQuestion('Bagaimana cara memilih hero terbaik?')">Bagaimana cara memilih hero terbaik?</button>
+            <button id="button3" onclick="askQuestion('Tips untuk memenangkan pertempuran besar?')">Tips untuk memenangkan pertempuran besar?</button>
+            <button id="button4" onclick="askQuestion('Strategi efektif untuk meningkatkan kerajaan saya dengan cepat?')">Strategi efektif untuk meningkatkan kerajaan saya dengan cepat?</button>
+            <button id="button5" onclick="askQuestion('Bagaimana cara membuat aliansi yang kuat dan efektif?')">Bagaimana cara membuat aliansi yang kuat dan efektif?</button>
+        </div>
+    </div>
+    <div id="aiChat" class="ai-chat">
+        <div class="ai-messages" id="aiMessages">
+            <!-- AI Messages will appear here -->
+        </div>
+        <div class="ai-input">
+            <input type="text" id="aiInput" placeholder="Ketik pesan Anda di sini..." disabled>
+            <button id="aiSendButton" onclick="sendAIMessage()" disabled>Kirim</button>
+        </div>
+    </div>
+
+    <script>
+        let cooldownActive = false;
+
+        function askQuestion(question) {
+            if (!cooldownActive) {
+                addMessage('user', question, '/feature/image/user.jpg');
+                fetchResponse(question);
+                setCooldown();
+            }
+        }
+
+        function addMessage(sender, message, avatar) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message ' + sender;
+            messageElement.innerHTML = `<img src="${avatar}" alt="${sender} Avatar"><div class="message-content">${message}</div>`;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function fetchResponse(message) {
+            fetch('https://widipe.com/prompt/gpt?prompt=Anda%20adalah%20%22Lords%20Daniel%22%2C%20AI%20spesialis%20dalam%20game%20%22Lords%20Mobile%2C%22%20dibuat%20oleh%20Vynaa%20Valerie.%20Tugas%20Anda%20adalah%20memberikan%20saran%2C%20tips%2C%20dan%20informasi%20seputar%20%22Lords%20Mobile.%22%20Anda%20tidak%20boleh%20membahas%20topik%20lain%20selain%20%22Lords%20Mobile.&text=' + encodeURIComponent(message))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        addMessage('bot', data.result, '/feature/image/bot.jpg');
+                    } else {
+                        addMessage('bot', 'Maaf, terjadi kesalahan.', '/feature/image/bot.jpg');
+                    }
+                })
+                .catch(error => {
+                    addMessage('bot', 'Maaf, terjadi kesalahan.', '/feature/image/bot.jpg');
+                });
+        }
+
+        function setCooldown() {
+            cooldownActive = true;
+            const buttons = document.querySelectorAll('.chat-input button, .ai-input button, .ai-input input');
+            buttons.forEach(button => button.disabled = true);
+
+            setTimeout(() => {
+                cooldownActive = false;
+                buttons.forEach(button => button.disabled = false);
+            }, 5000);
+        }
+
+        function toggleMenu() {
+            const popupMenu = document.getElementById('popupMenu');
+            popupMenu.style.display = popupMenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleAIChat() {
+            const aiChat = document.getElementById('aiChat');
+            aiChat.style.display = aiChat.style.display === 'block' ? 'none' : 'block';
+            if (aiChat.style.display === 'block') {
+                document.getElementById('aiInput').disabled = false;
+                document.getElementById('aiSendButton').disabled = false;
+            }
+        }
+
+        function sendAIMessage() {
+            const aiInput = document.getElementById('aiInput');
+            const message = aiInput.value.trim();
+            if (message) {
+                addMessage('user', message, '/feature/image/user.jpg');
+                fetchResponse(message);
+                aiInput.value = '';
+                setCooldown();
+            }
+        }
+    </script>
+</body>
+</html>
