@@ -22,8 +22,8 @@ const pageData = {
         { title: "", image: "https://d.top4top.io/p_3133ln76e9.jpeg", description: "Sewabot per 5 akun", price: "900k/6bulan" },
         { title: "", image: "https://d.top4top.io/p_3133ln76e9.jpeg", description: "Sewabot per 5 akun", price: "1.7Juta/1tahun" }
     ],
-    collectionLink: "https://wa.me/6289505587923",
-    whatsappNumber: "6289505587923"
+    collectionLink: "https://wa.me/62895399600005",
+    whatsappNumber: "62895399600005"
 };
 
 // Ensure `pageData` is accessible globally
